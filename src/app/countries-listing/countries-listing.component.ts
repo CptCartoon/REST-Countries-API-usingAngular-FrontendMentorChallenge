@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { CountryItemComponent } from "../country-item/country-item.component";
 import { CountriesService } from '../shared/services/countries.service';
 import { Country } from '../shared/interfaces/country';
 import { CommonModule } from '@angular/common';
+import { SearchFilterPipe } from "../shared/pipes/search-filter.pipe";
+import { FormsModule } from '@angular/forms';
 
 
 @Component({
@@ -10,13 +12,16 @@ import { CommonModule } from '@angular/common';
     standalone: true,
     templateUrl: './countries-listing.component.html',
     styleUrl: './countries-listing.component.css',
-    imports: [CountryItemComponent, CommonModule]
+    imports: [FormsModule, CountryItemComponent, CommonModule, SearchFilterPipe]
 })
 
 export class CountriesListingComponent implements OnInit {
 
+  inputTextValue!: string;
   countries: Country[] = [];
 
+  searchText = '';
+  selectRegion = "filterByRegion";
 
   constructor(private countriesService: CountriesService) {}
 
@@ -24,12 +29,24 @@ export class CountriesListingComponent implements OnInit {
       this.countriesService.getCountries().subscribe((countries) => {
         this.countries = countries;
       });
-
-     console.log(this.filterListing(''))
+      console.log(this.countries.filter(country => country.region === this.selectRegion))
   }
 
-  // filterListing(value: string): Country[] {
-  //   return this.countries.filter(country => country.name.common.toLowerCase().includes(value.toLowerCase()));
-  // }
+  getFilteredByRegion() {
+    if(this.selectRegion === 'filterByRegion') {
+      return this.countries;
+    }
+    return this.countries.filter(country => country.region === this.selectRegion);
+  }
+
+  getFilterListing(value?: string): Country[] {
+    
+    if(value) {
+      return this.getFilteredByRegion().filter(country => country.name.common.toLowerCase().includes(value.toLowerCase()));
+    }
+    return this.getFilteredByRegion();
+  }
+
+
 
 }
