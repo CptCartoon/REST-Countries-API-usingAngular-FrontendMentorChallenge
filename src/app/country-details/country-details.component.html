@@ -1,0 +1,42 @@
+<div class="country-details">
+  <div class="country-details-wrapper">
+    <div class="back-button">
+      <a (click)="back()">Back</a>
+    </div>
+    <div class="details">
+      <div class="flag">
+        <img [src]="countryDetails?.flags?.png" alt="" />
+      </div>
+      <div class="info">
+        <div class="info-details">
+          <div class="info-left">
+            <h2>{{ countryDetails?.name?.common }}</h2>
+            <p><span>Native Name: </span></p>
+            <p><span>Population: </span>{{ countryDetails?.population }}</p>
+            <p><span>Region: </span>{{ countryDetails?.region }}</p>
+            <p><span>Sub Region: </span>{{ countryDetails?.subregion }}</p>
+            <p><span>Capital: </span>{{ countryDetails?.capital }}</p>
+          </div>
+          <div class="info-right">
+            <p>
+              <span>Top Level Domain: </span>
+              {{ countryDetails?.tld }}
+            </p>
+            <p><span>Currencies: </span>{{ getCurrencies() }}</p>
+            <p><span>Languages: </span>{{ getLanguages() }}</p>
+          </div>
+        </div>
+        <div class="border-countries">
+          <p>
+            <span>Borders:</span>
+            <a
+              [routerLink]="['/details', border]"
+              *ngFor="let border of getBorders()"
+              >{{ border }}</a
+            >
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

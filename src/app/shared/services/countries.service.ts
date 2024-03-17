@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { AfterContentInit, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Country } from '../interfaces/country';
 
@@ -13,8 +13,24 @@ export class CountriesService {
   
   constructor(private http: HttpClient) {}
 
+  countries: Country[] = []
+  
   getCountries(): Observable<Country[]> {
     return this.http.get<Country[]>(`${this.baseUrl}/all`)
   }
 
+   getCountryByName(name: string) {
+    this.getCountries().subscribe((countries) => {
+      this.countries = countries;
+    });
+
+     return this.countries.find(country => country.name.common === name)
+   }
+
+   getCountriesArray() {
+    this.getCountries().subscribe((countries) => {
+      this.countries = countries;
+    });
+    return this.countries;
+   }
 }

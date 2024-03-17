@@ -5,12 +5,11 @@ export interface Country {
     population: number
     region: string
     capital: string
-    nativeName: string
     subregion: string
-    topLevelDomain: string
-    currencies: [{}]
-    languages: [{}]
+    tld: string
+    currencies: {[key: string]: any}
+    languages: any
     borders: string[]
     flags: {png: string}
-    alpha3Code: string
+    cca3: string
 }

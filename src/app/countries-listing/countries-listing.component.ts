@@ -1,9 +1,8 @@
-import { Component, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CountryItemComponent } from "../country-item/country-item.component";
 import { CountriesService } from '../shared/services/countries.service';
 import { Country } from '../shared/interfaces/country';
 import { CommonModule } from '@angular/common';
-import { SearchFilterPipe } from "../shared/pipes/search-filter.pipe";
 import { FormsModule } from '@angular/forms';
 
 
@@ -12,7 +11,7 @@ import { FormsModule } from '@angular/forms';
     standalone: true,
     templateUrl: './countries-listing.component.html',
     styleUrl: './countries-listing.component.css',
-    imports: [FormsModule, CountryItemComponent, CommonModule, SearchFilterPipe]
+    imports: [FormsModule, CountryItemComponent, CommonModule]
 })
 
 export class CountriesListingComponent implements OnInit {
@@ -29,7 +28,6 @@ export class CountriesListingComponent implements OnInit {
       this.countriesService.getCountries().subscribe((countries) => {
         this.countries = countries;
       });
-      console.log(this.countries.filter(country => country.region === this.selectRegion))
   }
 
   getFilteredByRegion() {
