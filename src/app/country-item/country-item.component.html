@@ -6,7 +6,7 @@
       </div>
       <div class="country-info">
         <h2>{{ country.name.common }}</h2>
-        <p><span>Population:</span> {{ country.population }}</p>
+        <p><span>Population:</span> {{ country.population | number }}</p>
         <p><span>Region:</span> {{ country.region }}</p>
         <p><span>Capital:</span> {{ country.capital }}</p>
       </div>

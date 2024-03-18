@@ -1,4 +1,8 @@
 /* HEADER */
+a {
+  text-decoration: none;
+  color: var(--VeryDarkBlue);
+}
 
 header {
   background-color: white;
@@ -41,6 +45,11 @@ header {
 .p-darkmode {
   font-size: 0.8rem;
   font-weight: 600;
+}
+@media screen and (max-width: 651px) {
+  .header-wrapper {
+    padding: 0 1.5rem;
+  }
 }
 
 @media screen and (min-width: 651px) {

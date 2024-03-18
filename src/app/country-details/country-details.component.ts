@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { CountriesService } from '../shared/services/countries.service';
 import { Country } from '../shared/interfaces/country';
 import { CommonModule } from '@angular/common';
@@ -15,21 +15,44 @@ import {Location} from '@angular/common';
 })
 export class CountryDetailsComponent {
   
-  route: ActivatedRoute = inject(ActivatedRoute);
+  activatedRoute: ActivatedRoute = inject(ActivatedRoute);
+  router: Router = inject(Router);
 
   countriesService = inject(CountriesService);
   countryDetails: Country | undefined;
   countryArray: Country[] | undefined;
 
   constructor(private location: Location) {
-   const countryName = this.route.snapshot.params['name.common'];
-   this.countryDetails = this.countriesService.getCountryByName(countryName);
-   this.countryArray = this.countriesService.getCountriesArray();
-   console.log(this.countryDetails)
+
+    const countryName = this.activatedRoute.snapshot.params['name.common'];
+    const countries: Country[] = []
+    this.countriesService.getCountries().subscribe((countries) => {
+      this.countryDetails = countries.find(country => country.name.common === countryName)
+    });
+
+    this.activatedRoute.paramMap.subscribe(
+      (params: ParamMap) => {
+        const countryName = params.get('name.common');
+        this.countryDetails = this.countriesService.getCountryByName(countryName!);
+      },
+    );
+    this.countryArray = this.countriesService.getCountriesArray();
   }
-  
+
   back(): void {
-    this.location.back();
+    this.router.navigate([this.location.back()])
+  }
+
+  navigate(border: string) {
+    this.router.navigate(['details/', border])
+  }
+
+  getNativeName() {
+    if(this.countryDetails?.altSpellings[2]) {
+      return this.countryDetails?.altSpellings[2]
+    }
+
+    return this.countryDetails?.altSpellings[1]
   }
   
   getLanguages() {
@@ -40,12 +63,14 @@ export class CountryDetailsComponent {
 
     const languages: string[] = []
     Object.keys(this.countryDetails?.languages).forEach(key => languages.push(this.countryDetails?.languages[key]));
-    //console.log(this.countryDetails)
     return languages.join(', ');
    }
 
    getBorders() {
     const countryBorders: string[] = [];
+    if(!this.countryDetails?.borders) {
+      return null;
+    }
 
     this.countryArray?.filter(country => this.countryDetails?.borders.includes(country.cca3) ? countryBorders.push(country.name.common) : null);
     return countryBorders;
