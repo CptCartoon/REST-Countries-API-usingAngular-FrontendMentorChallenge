@@ -23,7 +23,7 @@ Users should be able to:
 
 ### Links
 
-- Live Site URL: [Live Server Preview](https://cptcartoon.github.io/REST-Countries-API-usingAngular-FrontendMentorChallenge)  // Don't work on ghpages for now, i will fix it.
+- Live Site URL: [Live Server Preview](https://cptcartoon.github.io/REST-Countries-API-usingAngular-FrontendMentorChallenge)
 
 ### Built with
 
